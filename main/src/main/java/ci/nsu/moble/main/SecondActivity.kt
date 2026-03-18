@@ -38,6 +38,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import ci.nsu.moble.main.ui.Screens.HomeScreen
+import ci.nsu.moble.main.ui.Screens.ScreenOneContent
+import ci.nsu.moble.main.ui.Screens.ScreenTwoContent
 import ci.nsu.moble.main.ui.theme.PracticeTheme
 
 sealed class Screen(val route: String) {
@@ -143,53 +146,12 @@ fun SecondActivityScreen() {
                 HomeScreen()
             }
             composable(Screen.ScreenOne.route) {
-                ScreenOne()
+                ScreenOneContent()
             }
             composable(Screen.ScreenTwo.route) {
-                ScreenTwo()
+                ScreenTwoContent()
             }
         }
     }
 }
 
-@Composable
-fun HomeScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Home Screen",
-            fontSize = 24.sp
-        )
-    }
-}
-
-@Composable
-fun ScreenOne() {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Screen One",
-            fontSize = 24.sp
-        )
-    }
-}
-
-@Composable
-fun ScreenTwo() {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Screen Two",
-            fontSize = 24.sp
-        )
-    }
-}
