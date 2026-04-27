@@ -17,6 +17,7 @@ import ci.nsu.mobile.main.viewmodels.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
@@ -46,9 +47,9 @@ fun CalendarScreen(
                 Button(
                     onClick = {
                         if (isMonthMode) {
-                            val newCal = currentMonth.clone() as Calendar
-                            newCal.add(Calendar.MONTH, -1)
-                            currentMonth = newCal
+                            val newCal = currentMonth.clone() as Calendar //копирование
+                            newCal.add(Calendar.MONTH, -1) //отнимаем
+                            currentMonth = newCal //присваиваем
                         } else {
                             val newCal = currentMonth.clone() as Calendar
                             newCal.add(Calendar.WEEK_OF_YEAR, -1)
@@ -69,10 +70,10 @@ fun CalendarScreen(
                     text = if (isMonthMode) {
                         SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(currentMonth.time)
                     } else {
-                        val calendar = currentMonth.clone() as Calendar
-                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                        val start = SimpleDateFormat("dd.MM", Locale.getDefault()).format(calendar.time)
-                        calendar.add(Calendar.DAY_OF_MONTH, 6)
+                        val calendar = currentMonth.clone() as Calendar //копия текущей даты
+                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY) //перевод на неделю с понедельника
+                        val start = SimpleDateFormat("dd.MM", Locale.getDefault()).format(calendar.time) //перевод формата
+                        calendar.add(Calendar.DAY_OF_MONTH, 6) //плюс 6 дней для воскресенья
                         val end = SimpleDateFormat("dd.MM", Locale.getDefault()).format(calendar.time)
                         "$start - $end"
                     },
@@ -109,7 +110,7 @@ fun CalendarScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Кнопки переключения режимов - на всю ширину, рядом
+            // Кнопки переключения режимов
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -120,7 +121,7 @@ fun CalendarScreen(
                         containerColor = if (isMonthMode) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
                         contentColor = if (isMonthMode) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
                     ),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f) //половина ширины
                 ) {
                     Text("Месяц", modifier = Modifier.padding(vertical = 8.dp))
                 }
@@ -148,7 +149,7 @@ fun CalendarScreen(
             listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEach { day ->
                 Text(
                     text = day,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f), //каждый день занимает одинаковую ширину
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
             }
@@ -156,8 +157,7 @@ fun CalendarScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Календарь
-        key(refreshKey) {
+        key(refreshKey) { //обновление
             if (isMonthMode) {
                 MonthCalendar(currentMonth, shoppingLists, navController)
             } else {
@@ -175,7 +175,7 @@ fun MonthCalendar(
 ) {
     val days = remember(currentMonth, shoppingLists) { getMonthDays(currentMonth, shoppingLists) }
 
-    LazyVerticalGrid(
+    LazyVerticalGrid( //сетка дат
         columns = GridCells.Fixed(7),
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -184,7 +184,7 @@ fun MonthCalendar(
             if (dayInfo.day != null) {
                 CalendarDayCell(
                     day = dayInfo.day.toString(),
-                    hasData = dayInfo.hasData,
+                    hasData = dayInfo.hasData, //есть ли список
                     onClick = { navController.navigate("shopping_list/${dayInfo.dateString}") }
                 )
             } else {
@@ -219,7 +219,7 @@ fun WeekCalendar(
 }
 
 @Composable
-fun CalendarDayCell(
+fun CalendarDayCell( //день
     day: String,
     hasData: Boolean,
     onClick: () -> Unit
@@ -251,11 +251,11 @@ data class CalendarDayInfo(
 )
 
 fun getMonthDays(currentMonth: Calendar, shoppingLists: Map<String, List<String>>): List<CalendarDayInfo> {
-    val days = mutableListOf<CalendarDayInfo>()
-    val calendar = currentMonth.clone() as Calendar
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
+    val days = mutableListOf<CalendarDayInfo>() //пустоц список
+    val calendar = currentMonth.clone() as Calendar //копирование даты
+    calendar.set(Calendar.DAY_OF_MONTH, 1) //перевод календаря на 1 число
 
-    val firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+    val firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) //расчет нчала не пустых ячеек
     val offset = when (firstDayOfWeek) {
         Calendar.MONDAY -> 0
         Calendar.TUESDAY -> 1
@@ -271,11 +271,11 @@ fun getMonthDays(currentMonth: Calendar, shoppingLists: Map<String, List<String>
         days.add(CalendarDayInfo(null, "", false))
     }
 
-    val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) //сколько дней в месяце
     for (day in 1..daysInMonth) {
-        calendar.set(Calendar.DAY_OF_MONTH, day)
-        val dateString = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}-$day"
-        days.add(CalendarDayInfo(day, dateString, shoppingLists.containsKey(dateString)))
+        calendar.set(Calendar.DAY_OF_MONTH, day) //установление числа
+        val dateString = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}-$day" //формирование строки
+        days.add(CalendarDayInfo(day, dateString, shoppingLists.containsKey(dateString))) //добавление ячейки в список
     }
 
     return days
@@ -284,14 +284,14 @@ fun getMonthDays(currentMonth: Calendar, shoppingLists: Map<String, List<String>
 fun getWeekDays(currentMonth: Calendar, shoppingLists: Map<String, List<String>>): List<CalendarDayInfo> {
     val days = mutableListOf<CalendarDayInfo>()
     val calendar = currentMonth.clone() as Calendar
-    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY) //формирует неделю с понедельника
 
     for (i in 0..6) {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val dateString = "$year-$month-$day"
-        days.add(CalendarDayInfo(day, dateString, shoppingLists.containsKey(dateString)))
+        days.add(CalendarDayInfo(day, dateString, shoppingLists.containsKey(dateString))) //проверка есть ли список уже на день
         calendar.add(Calendar.DAY_OF_MONTH, 1)
     }
 

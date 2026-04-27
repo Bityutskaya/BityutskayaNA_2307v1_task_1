@@ -15,11 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ci.nsu.mobile.main.database.AppDatabase
-import ci.nsu.mobile.main.data.ShoppingListRepository
 import ci.nsu.mobile.main.ui.screens.CalendarScreen
 import ci.nsu.mobile.main.ui.screens.ShoppingListScreen
 import ci.nsu.mobile.main.viewmodels.MainViewModel
 import ci.nsu.mobile.main.viewmodels.MainViewModelFactory
+import ci.nsu.mobile.main.data.ShoppingListRepository
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

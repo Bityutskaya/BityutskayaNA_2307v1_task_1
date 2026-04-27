@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ci.nsu.mobile.main.data.ShoppingListRepository
 
-class MainViewModelFactory(
+class MainViewModelFactory(  //создает ViewModel с нужными зависимостями (???)
     private val repository: ShoppingListRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

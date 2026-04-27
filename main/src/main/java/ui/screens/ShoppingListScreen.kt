@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import ci.nsu.mobile.main.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun ShoppingListScreen(
     navController: NavController,
@@ -25,7 +26,7 @@ fun ShoppingListScreen(
     val scope = rememberCoroutineScope()
     var isLoading by remember { mutableStateOf(true) }
 
-    LaunchedEffect(date) {
+    LaunchedEffect(date) { //загрузка данных при открытии
         isLoading = true
         items = viewModel.getListForDate(date)
         isLoading = false
@@ -43,13 +44,13 @@ fun ShoppingListScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
+        Row( //строка с добавлением
+            modifier = Modifier.fillMaxWidth(), //на всю ширину
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedTextField(
+            OutlinedTextField( //поле ввода
                 value = newItem,
-                onValueChange = { newItem = it },
+                onValueChange = { newItem = it }, //при каждом обновлении newItem = теькст
                 label = { Text("Новый пункт") },
                 modifier = Modifier.weight(1f)
             )
@@ -68,17 +69,17 @@ fun ShoppingListScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+        if (isLoading) { //закрузка данных с бд
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { //контейнер во весь экран
+                CircularProgressIndicator() //крутилка
             }
         } else {
             LazyColumn(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f), //занимает все место
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(items) { item ->
-                    Card(
+                    Card( //пункты списка
                         modifier = Modifier.fillMaxWidth(),
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
@@ -86,7 +87,7 @@ fun ShoppingListScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween //текст влево, кнопка вправо
                         ) {
                             Text(text = item)
                             IconButton(onClick = {
@@ -108,13 +109,13 @@ fun ShoppingListScreen(
         ) {
             Button(
                 onClick = {
-                    scope.launch {
+                    scope.launch {                                                                                                                                                                                              //ассинхрон
                         if (items.isNotEmpty()) {
                             viewModel.saveList(date, items)
                         } else {
                             viewModel.deleteList(date)
                         }
-                        navController.popBackStack()
+                        navController.popBackStack() //возращение на календарь
                     }
                 },
                 modifier = Modifier.weight(1f)
@@ -126,7 +127,7 @@ fun ShoppingListScreen(
                 onClick = {
                     scope.launch {
                         viewModel.deleteList(date)
-                        navController.popBackStack()
+                        navController.popBackStack() //возращение на календарь
                     }
                 },
                 modifier = Modifier.weight(1f),

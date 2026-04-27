@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ci.nsu.mobile.main.data.ShoppingListRepository
 import kotlinx.coroutines.launch
+import ci.nsu.mobile.main.data.ShoppingListRepository
 
 class MainViewModel(private val repository: ShoppingListRepository) : ViewModel() {
 
@@ -16,7 +16,7 @@ class MainViewModel(private val repository: ShoppingListRepository) : ViewModel(
         loadLists()
     }
 
-    private fun loadLists() {
+    private fun loadLists() { //загрузка бд
         viewModelScope.launch {
             repository.getAllLists().collect { lists ->
                 _shoppingLists.value = lists.associate { it.date to it.items }
@@ -24,7 +24,7 @@ class MainViewModel(private val repository: ShoppingListRepository) : ViewModel(
         }
     }
 
-    suspend fun getListForDate(date: String): List<String> {
+    suspend fun getListForDate(date: String): List<String> { //загрузка конкретного списка
         return repository.getListForDate(date)
     }
 
