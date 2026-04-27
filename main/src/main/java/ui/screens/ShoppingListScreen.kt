@@ -37,7 +37,7 @@ fun ShoppingListScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Список покупок на $date",
+            text = "Добавить заметку на $date",
             style = MaterialTheme.typography.headlineSmall
         )
 

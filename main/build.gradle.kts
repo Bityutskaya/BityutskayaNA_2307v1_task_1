@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.shoppingcalendar"
+    namespace = "ci.nsu.mobile.main"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.shoppingcalendar"
+        applicationId = "ci.nsu.mobile.main"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

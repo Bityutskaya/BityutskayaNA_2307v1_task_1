@@ -1,4 +1,4 @@
-package com.example.shoppingcalendar
+package ci.nsu.mobile.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
