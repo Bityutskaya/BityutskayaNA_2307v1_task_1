@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                Surface(
+                Surface( //фон
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
@@ -47,20 +47,20 @@ fun ShoppingCalendarApp(repository: ShoppingListRepository) {
     val viewModel: MainViewModel = viewModel(factory = factory)
     val navController = rememberNavController()
 
-    NavHost(
+    NavHost( //текущий контейнер
         navController = navController,
-        startDestination = "calendar"
+        startDestination = "calendar" //первый жкран
     ) {
         composable("calendar") {
-            CalendarScreen(navController, viewModel)
+            CalendarScreen(navController, viewModel) //отрисовка экрана
         }
 
         composable(
             "shopping_list/{date}",
-            arguments = listOf(navArgument("date") { type = NavType.StringType })
+            arguments = listOf(navArgument("date") { type = NavType.StringType }) // date это string
         ) { backStackEntry ->
-            val date = backStackEntry.arguments?.getString("date") ?: ""
-            ShoppingListScreen(navController, date, viewModel)
+            val date = backStackEntry.arguments?.getString("date") ?: "" //формат даты????
+            ShoppingListScreen(navController, date, viewModel) //отрисовка экрана
         }
     }
 }
