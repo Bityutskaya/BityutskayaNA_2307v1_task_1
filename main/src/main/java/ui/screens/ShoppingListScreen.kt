@@ -14,6 +14,12 @@ import androidx.navigation.NavController
 import ci.nsu.mobile.main.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
+private fun isDuplicate(items: List<String>, newItem: String): Boolean { //ИBoolean возвращает true если есть дубликат
+    val trimmedNew = newItem.trim() // trim удаляет пробел
+    return items.any { existing ->
+        existing.trim().equals(trimmedNew, ignoreCase = true) //equals игнорит регистр
+    }
+}
 
 @Composable
 fun ShoppingListScreen(
@@ -58,8 +64,16 @@ fun ShoppingListScreen(
             Button(
                 onClick = {
                     if (newItem.isNotBlank()) {
-                        items = items + newItem
-                        newItem = ""
+                        if (isDuplicate(items, newItem)) {
+                            android.widget.Toast.makeText( // сообщение, что такой пункт уже есть
+                                navController.context,
+                                "Такой пункт уже есть в списке!",
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            items = items + newItem.trim()
+                            newItem = ""
+                        }
                     }
                 }
             ) {
